@@ -337,44 +337,67 @@ function itemChange(dom) {
     const dots = dom.parentNode.querySelector('.dots-wrapper').querySelectorAll('li')
     const width = changeList.clientWidth
     const length = changeLis.length
-    let index = 0
-    next.addEventListener('click', function (e) {
+    let index = 0 // 当前显示的index
+    // next 点击事件
+    next.addEventListener('click', (e) => {
         e.preventDefault()
         if (index === length - 1) {
             return
         }
         index++
-        if (index === length - 1) {
-            this.style.cursor = 'default'
-        } else {
-            this.style.cursor = 'pointer'
-        }
+        nextCursorChange()
         prev.style.cursor = 'pointer'
-        for (let i = 0; i < dots.length; i++) {
-            removeClass(dots[i].querySelector('span'), 'active')
-        }
-        addClass(dots[index].querySelector('span'), 'active')
-        changeList.style.marginLeft = `${-width / length * index}px`
+        changeTransform()
     })
-    prev.addEventListener('click', function (e) {
+    // prev 点击事件
+    prev.addEventListener('click', (e) => {
         e.preventDefault()
         if (index === 0) {
             return
         }
         index--
-        if (index === 0) {
-            this.style.cursor = 'default'
-        } else {
-            this.style.cursor = 'pointer'
-        }
+        prevCursorChange()
         next.style.cursor = 'pointer'
+        changeTransform()
+    })
+
+    // dot点击事件
+    for(let i = 0; i < dots.length; i++) {
+        dots[i].querySelector('span').addEventListener('click', () => {
+            index = i
+            nextCursorChange()
+            prevCursorChange()
+            changeTransform()
+        })
+    }
+    // dot和轮播变化
+    function changeTransform() {
         for (let i = 0; i < dots.length; i++) {
             removeClass(dots[i].querySelector('span'), 'active')
         }
         addClass(dots[index].querySelector('span'), 'active')
         changeList.style.marginLeft = `${-width / length * index}px`
-    })
+    }
+
+    // next按钮cursor变化
+    function nextCursorChange() {
+        if (index === length - 1) {
+            next.style.cursor = 'default'
+        } else {
+            next.style.cursor = 'pointer'
+        }
+    }
+
+    // prev按钮cursor变化
+    function prevCursorChange() {
+        if (index === 0) {
+            prev.style.cursor = 'default'
+        } else {
+            prev.style.cursor = 'pointer'
+        }
+    }
 }
+
 // content 内容变换 end
 
 
