@@ -397,14 +397,4 @@ function itemChange(dom) {
         }
     }
 }
-
 // content 内容变换 end
-
-
-
-
-
-
-
-
-
